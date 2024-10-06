@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Cadastro</title>
+    <title>Tabela de Freteiros</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        input[type="text"], input[type="submit"] {
-            padding: 8px;
-            margin: 5px 0;
-            width: 100%;
+        h1, h2 {
+            color: #4CAF50;
         }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+        .section {
+            margin-bottom: 40px;
         }
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        .form-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .form-section h2 {
+            margin-top: 0;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            display: none; /* Inicialmente escondida, a tabela aparecerá após o cadastro */
         }
         table, th, td {
             border: 1px solid black;
@@ -39,56 +38,174 @@
         th {
             background-color: #f2f2f2;
         }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .print-button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .print-button:hover {
+            background-color: #1976D2;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Cadastro de Freteiros</h1>
-    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <h1>Tabela de Freteiros</h1>
 
-        <label for="cadastro">Número do Cadastro:</label><br>
-        <input type="text" id="cadastro" name="cadastro" required><br><br>
+    <!-- Formulário de Entrada -->
+    <div class="section form-section">
+        <h2>Adicionar Novo Frete</h2>
+        <form id="freteiroForm">
+            <label for="codMotorista">Código do Motorista:</label>
+            <input type="number" id="codMotorista" name="codMotorista" required>
 
-        <input type="submit" value="Enviar">
-    </form>
+            <label for="codMotivo">Código do Motivo:</label>
+            <input type="number" id="codMotivo" name="codMotivo" required>
 
-    <button onclick="window.print()">Imprimir Relatório</button> <!-- Botão para impressão -->
+            <label for="numeroNota">Número da Nota:</label>
+            <input type="text" id="numeroNota" name="numeroNota" required>
 
-    <h2>Relatório de Freteiros</h2>
+            <label for="valor">Valor:</label>
+            <input type="number" step="0.01" id="valor" name="valor" required>
+
+            <input type="submit" value="Adicionar">
+        </form>
+    </div>
+
+    <!-- Formulário de Cadastro de Freteiros -->
+    <div class="section form-section">
+        <h2>Cadastrar Novo Freteiro</h2>
+        <form id="novoFreteiroForm">
+            <label for="codigoFreteiro">Código do Freteiro:</label>
+            <input type="number" id="codigoFreteiro" name="codigoFreteiro" required>
+
+            <label for="nomeFreteiro">Nome do Freteiro:</label>
+            <input type="text" id="nomeFreteiro" name="nomeFreteiro" required>
+
+            <input type="submit" value="Cadastrar Freteiro">
+        </form>
+    </div>
+
+    <!-- Botão de Impressão -->
+    <button class="print-button" onclick="window.print()">Imprimir Tabela</button>
+
+    <!-- Tabela de Freteiros -->
     <table id="tabelaFreteiros">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Número do Cadastro</th>
+                <th>N°</th>
+                <th>Código</th>
+                <th>Freteiro</th>
+                <th>Motivo</th>
+                <th>Nota</th>
+                <th>Motivo</th>
+                <th>Valor</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Dados da tabela serão preenchidos via JavaScript ou outra lógica -->
+            <!-- Dados serão inseridos aqui -->
         </tbody>
     </table>
 
+    <!-- Exibir Total -->
+    <p class="total">Total: <span id="total">0.00</span></p>
+
     <script>
-        // Exemplo de como adicionar dados à tabela após o cadastro (substitua com a lógica correta)
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Impede o envio normal do formulário
+        // Dados fictícios dos freteiros e motivos
+        const freteiros = {
+            27: "ACLEILSON - ANTONIO A.OLIVEIRA SILVA",
+            212: "SEBASTIÃO",
+            // ... continuar lista
+        };
 
-            const nome = document.getElementById('nome').value;
-            const cadastro = document.getElementById('cadastro').value;
+        const motivos = {
+            1: "CHAPA/REEMBOLSO",
+            2: "DESCONTAR",
+            3: "PEDAGIO",
+            4: "MERCADORIA"
+            5: "ESTACIONAMENTO",
+            // ... continuar lista
+        };
 
-            const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
-            const novaLinha = document.createElement('tr');
+        let total = 0;
+        let contador = 1;
 
-            novaLinha.innerHTML = `
-                <td>${nome}</td>
-                <td>${cadastro}</td>
-            `;
+        // Função para adicionar uma nova linha na tabela
+        document.getElementById('freteiroForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Impede o envio do formulário
 
-            tabela.appendChild(novaLinha);
-            document.getElementById('tabelaFreteiros').style.display = 'table'; // Exibe a tabela
-            document.querySelector('form').reset(); // Reseta o formulário
+            const codMotorista = document.getElementById('codMotorista').value;
+            const codMotivo = document.getElementById('codMotivo').value;
+            const numeroNota = document.getElementById('numeroNota').value;
+            const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
+
+            if (freteiros[codMotorista] && motivos[codMotivo]) {
+                const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
+                const novaLinha = document.createElement('tr');
+
+                novaLinha.innerHTML = `
+                    <td>${contador}</td>
+                    <td>${codMotorista}</td>
+                    <td>${freteiros[codMotorista]}</td>
+                    <td>${codMotivo}</td>
+                    <td>${numeroNota}</td>
+                    <td>${motivos[codMotivo]}</td>
+                    <td>${valor}</td>
+                `;
+
+                tabela.appendChild(novaLinha);
+
+                // Atualizar total
+                total = (parseFloat(total) + parseFloat(valor)).toFixed(2);
+                document.getElementById('total').textContent = total;
+
+                contador++;
+            } else {
+                alert('Código de Motorista ou Motivo inválido!');
+            }
+
+            // Limpar campos do formulário
+            document.getElementById('freteiroForm').reset();
         });
+
+        // Função para cadastrar novos freteiros
+        document.getElementById('novoFreteiroForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Impede o envio do formulário
+
+            const codigoFreteiro = document.getElementById('codigoFreteiro').value;
+            const nomeFreteiro = document.getElementById('nomeFreteiro').value;
+
+            // Adiciona o novo freteiro ao objeto
+            freteiros[codigoFreteiro] = nomeFreteiro;
+
+            alert(`Freteiro ${nomeFreteiro} cadastrado com sucesso!`);
+
+            // Limpar campos do formulário
+            document.getElementById('novoFreteiroForm').reset();
+        });
+
     </script>
 
 </body>
