@@ -23,6 +23,22 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none; /* Inicialmente escondida, a tabela aparecerá após o cadastro */
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -37,6 +53,43 @@
 
         <input type="submit" value="Enviar">
     </form>
+
+    <button onclick="window.print()">Imprimir Relatório</button> <!-- Botão para impressão -->
+
+    <h2>Relatório de Freteiros</h2>
+    <table id="tabelaFreteiros">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Número do Cadastro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados da tabela serão preenchidos via JavaScript ou outra lógica -->
+        </tbody>
+    </table>
+
+    <script>
+        // Exemplo de como adicionar dados à tabela após o cadastro (substitua com a lógica correta)
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio normal do formulário
+
+            const nome = document.getElementById('nome').value;
+            const cadastro = document.getElementById('cadastro').value;
+
+            const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
+            const novaLinha = document.createElement('tr');
+
+            novaLinha.innerHTML = `
+                <td>${nome}</td>
+                <td>${cadastro}</td>
+            `;
+
+            tabela.appendChild(novaLinha);
+            document.getElementById('tabelaFreteiros').style.display = 'table'; // Exibe a tabela
+            document.querySelector('form').reset(); // Reseta o formulário
+        });
+    </script>
 
 </body>
 </html>
