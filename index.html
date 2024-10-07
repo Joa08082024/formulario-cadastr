@@ -42,6 +42,14 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        .export-btn {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +105,9 @@
     <!-- Exibir Total -->
     <p class="total">Total: <span id="total">0.00</span></p>
 
+    <!-- Botão para Exportar para Excel -->
+    <button class="export-btn" id="exportarExcel">Exportar para Excel</button>
+
     <script>
         const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
         const freteiros = {}; // Objeto para armazenar motoristas e seus nomes
@@ -106,7 +117,6 @@
             3: "PEDAGIO",
             4: "PAGAMENTO MERC",
             5: "ESTACIONAMENTO",
-            // Adicione outros motivos conforme necessário
         };
 
         let total = 0;
@@ -117,8 +127,8 @@
             .then(response => response.json())
             .then(data => {
                 data.forEach((row, index) => {
-                    if (index > 0) { // Ignora o cabeçalho
-                        freteiros[row[0]] = row[1]; // Código do motorista e nome
+                    if (index > 0) {
+                        freteiros[row[0]] = row[1];
                     }
                 });
             })
@@ -133,12 +143,10 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
-            // Verifica se o motorista existe
             if (freteiros[codMotorista]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
 
-                // Adiciona os dados à tabela
                 novaLinha.innerHTML = `
                     <td>${contador}</td>
                     <td>${codMotorista}</td>
@@ -156,12 +164,19 @@
 
                 contador++;
             } else {
-                // Se o código do motorista não existe, exibe mensagem de erro
                 alert(`Código de Motorista ${codMotorista} não encontrado na base.`);
             }
 
-            // Reseta o formulário
             document.getElementById('freteiroForm').reset();
+        });
+
+        // Função para exportar a tabela para Excel
+        document.getElementById('exportarExcel').addEventListener('click', function () {
+            let tabela = document.getElementById('tabelaFreteiros').outerHTML.replace(/ /g, '%20');
+            let a = document.createElement('a');
+            a.href = 'data:application/vnd.ms-excel,' + tabela;
+            a.download = 'tabela_freteiros.xls';
+            a.click();
         });
 
     </script>
