@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -42,41 +42,42 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .tabs {
-            margin-top: 20px;
+        /* Estilo para o botão laranja */
+        button {
+            background-color: #FFA500;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
         }
-        .tab-content {
+        button:hover {
+            background-color: #FF8C00;
+        }
+        .tab {
             display: none;
-        }
-        .tab-content.active {
-            display: block;
         }
     </style>
 </head>
 <body>
 
     <h1>Cadastro de Freteiros</h1>
-    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    
+    <!-- Botões para alternar entre abas -->
+    <button onclick="showTab('formulario')">Cadastro</button>
+    <button onclick="showTab('relatorio')">Relatório</button>
 
-        <label for="cadastro">Número do Cadastro:</label><br>
-        <input type="text" id="cadastro" name="cadastro" required><br><br>
+    <!-- Formulário de Entrada -->
+    <div id="formulario" class="tab">
+        <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome" name="nome" required><br><br>
 
-        <input type="submit" value="Enviar">
-    </form>
+            <label for="cadastro">Número do Cadastro:</label><br>
+            <input type="text" id="cadastro" name="cadastro" required><br><br>
 
-    <h1>Tabela de Freteiros</h1>
+            <input type="submit" value="Enviar">
+        </form>
 
-    <!-- Abas de navegação -->
-    <div class="tabs">
-        <button onclick="showTab('formulario')">Formulário</button>
-        <button onclick="showTab('relatorio')">Relatório</button>
-    </div>
-
-    <!-- Conteúdo da aba de Formulário -->
-    <div id="formulario" class="tab-content active">
-        <!-- Formulário de Entrada -->
         <form id="freteiroForm">
             <label for="codMotorista">Código do Motorista:</label>
             <input type="number" id="codMotorista" name="codMotorista" required>
@@ -94,9 +95,9 @@
         </form>
     </div>
 
-    <!-- Conteúdo da aba de Relatório -->
-    <div id="relatorio" class="tab-content">
-        <!-- Tabela de Freteiros -->
+    <!-- Relatório -->
+    <div id="relatorio" class="tab">
+        <h1>Relatório de Freteiros</h1>
         <table id="tabelaFreteiros">
             <thead>
                 <tr>
@@ -187,12 +188,15 @@
 
         // Função para trocar de aba
         function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.style.display = 'none');
+            document.getElementById(tabName).style.display = 'block';
         }
+
+        // Mostrar o formulário ao carregar a página
+        document.addEventListener('DOMContentLoaded', function () {
+            showTab('formulario');
+        });
 
         // Função para exportar tabela para Excel
         function exportTableToExcel() {
