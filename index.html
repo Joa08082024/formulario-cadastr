@@ -175,7 +175,7 @@
             let tabela = document.getElementById('tabelaFreteiros').outerHTML.replace(/ /g, '%20');
             let a = document.createElement('a');
             a.href = 'data:application/vnd.ms-excel,' + tabela;
-            a.download = 'tabela_freteiros.xls';
+            a.download = 'tabela_freteiros.xlsx';
             a.click();
         });
 
