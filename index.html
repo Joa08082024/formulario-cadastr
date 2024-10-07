@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela de Freteiros</title>
+    <title>Cadastro e Tabela de Freteiros</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+        }
+        input[type="text"], input[type="number"], input[type="submit"] {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
         table {
             width: 100%;
@@ -24,21 +38,6 @@
         th {
             background-color: #f2f2f2;
         }
-        input[type="text"], input[type="number"] {
-            padding: 8px;
-            margin: 5px 0;
-            width: 100%;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
         .total {
             font-weight: bold;
             margin-top: 10px;
@@ -46,6 +45,18 @@
     </style>
 </head>
 <body>
+
+    <h1>Cadastro de Freteiros</h1>
+    <!-- Formulário para salvar dados na planilha Google -->
+    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="cadastro">Número do Cadastro:</label><br>
+        <input type="text" id="cadastro" name="cadastro" required><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
 
     <h1>Tabela de Freteiros</h1>
 
