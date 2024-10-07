@@ -134,17 +134,28 @@
         let total = 0;
         let contador = 1;
 
-        // Carregar dados da planilha para freteiros
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach((row, index) => {
-                    if (index > 0) { // Ignora o cabeçalho
-                        freteiros[row[0]] = row[1]; // Código do motorista e nome
+        // Função para buscar os dados da planilha e armazenar motoristas
+        function carregarDadosPlanilha() {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao conectar com a planilha.');
                     }
-                });
-            })
-            .catch(error => console.error('Erro ao buscar dados:', error));
+                    return response.json();
+                })
+                .then(data => {
+                    data.forEach((row, index) => {
+                        if (index > 0) { // Ignora o cabeçalho
+                            freteiros[row[0]] = row[1]; // Código do motorista e nome
+                        }
+                    });
+                    console.log("Dados carregados com sucesso.");
+                })
+                .catch(error => console.error('Erro ao buscar dados:', error));
+        }
+
+        // Chama a função para carregar os dados ao iniciar
+        carregarDadosPlanilha();
 
         // Adicionar dados ao relatório
         document.getElementById('freteiroForm').addEventListener('submit', function (event) {
