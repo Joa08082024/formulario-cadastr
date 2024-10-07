@@ -9,20 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        h1, h2 {
-            color: #4CAF50;
-        }
-        .section {
-            margin-bottom: 40px;
-        }
-        .form-section {
-            border: 1px solid #ddd;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .form-section h2 {
-            margin-top: 0;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -57,17 +43,6 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .print-button {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .print-button:hover {
-            background-color: #1976D2;
-        }
     </style>
 </head>
 <body>
@@ -75,40 +50,36 @@
     <h1>Tabela de Freteiros</h1>
 
     <!-- Formulário de Entrada -->
-    <div class="section form-section">
-        <h2>Adicionar Novo Frete</h2>
-        <form id="freteiroForm">
-            <label for="codMotorista">Código do Motorista:</label>
-            <input type="number" id="codMotorista" name="codMotorista" required>
+    <form id="freteiroForm">
+        <label for="codMotorista">Código do Motorista:</label>
+        <input type="number" id="codMotorista" name="codMotorista" required>
 
-            <label for="codMotivo">Código do Motivo:</label>
-            <input type="number" id="codMotivo" name="codMotivo" required>
+        <label for="codMotivo">Código do Motivo:</label>
+        <input type="number" id="codMotivo" name="codMotivo" required>
 
-            <label for="numeroNota">Número da Nota:</label>
-            <input type="text" id="numeroNota" name="numeroNota" required>
+        <label for="numeroNota">Número da Nota:</label>
+        <input type="text" id="numeroNota" name="numeroNota" required>
 
-            <label for="valor">Valor:</label>
-            <input type="number" step="0.01" id="valor" name="valor" required>
+        <label for="valor">Valor:</label>
+        <input type="number" step="0.01" id="valor" name="valor" required>
 
-            <input type="submit" value="Adicionar">
-        </form>
-    </div>
+        <input type="submit" value="Adicionar">
+    </form>
 
     <!-- Formulário de Cadastro de Freteiros -->
-    <div class="section form-section">
-        <h2>Cadastrar Novo Freteiro</h2>
-        <form id="novoFreteiroForm">
-            <label for="codigoFreteiro">Código do Freteiro:</label>
-            <input type="number" id="codigoFreteiro" name="codigoFreteiro" required>
+    <h2>Cadastrar Novo Freteiro</h2>
+    <form id="novoFreteiroForm">
+        <label for="codigoFreteiro">Código do Freteiro:</label>
+        <input type="number" id="codigoFreteiro" name="codigoFreteiro" required>
 
-            <label for="nomeFreteiro">Nome do Freteiro:</label>
-            <input type="text" id="nomeFreteiro" name="nomeFreteiro" required>
+        <label for="nomeFreteiro">Nome do Freteiro:</label>
+        <input type="text" id="nomeFreteiro" name="nomeFreteiro" required>
 
-            <input type="submit" value="Cadastrar Freteiro">
-        </form>
-    </div>
+        <input type="submit" value="Cadastrar Freteiro">
+    </form>
 
-    <!-- Botão de Impressão -->
+    <br><br>
+
     <button class="print-button" onclick="window.print()">Imprimir Tabela</button>
 
     <!-- Tabela de Freteiros -->
@@ -133,20 +104,34 @@
     <p class="total">Total: <span id="total">0.00</span></p>
 
     <script>
-        // Dados fictícios dos freteiros e motivos
         const freteiros = {
             27: "ACLEILSON - ANTONIO A.OLIVEIRA SILVA",
             212: "SEBASTIÃO",
-            // ... continuar lista
+            275: "ADELIO - VINICIUS MARTINS LISBOA LIMA",
+            12: "ADELSON - ADELSON DE P. MORAIS",
+            16: "AGNALDO - AGNALDO RIBEIRO",
+            68: "OLIVEIRA - ANA MARCIA NERES BATISTA",
+            22: "ANDERSON - ANDERSON ARRUDA",
+            19: "BARBOSA",
+            302: "BADU",   
+            237: "BISPO - RAFAEL BISPO DE ARAGAO",
+            60: "BONAFE - LEANDRO BONAFE DOS SANTOS",
+            36: "BRENO - BRENO DOS SANTOS BRITO",
+            258: "BRITO - BRUNO DOS SANTOS BRITO",
+            83: "BRUNO - BRUNO FERNANDO DE CAMARGO",
+            236: "BUENO - ODIRLEY BUENO DE CAMARGO",
+            33: "CAETANO - ROMILSON VILA NOVA CAETANO",
+            20: "CAIQUE - CAIQUE LIMA PEDERIVA",
+            79: "CAMPOS - OSMAR DOS SANTOS CAMPOS",
         };
 
         const motivos = {
             1: "CHAPA/REEMBOLSO",
             2: "DESCONTAR",
             3: "PEDAGIO",
-            4: "MERCADORIA"
+            4: "PEGAMENTO MERCADORIA",
             5: "ESTACIONAMENTO",
-            // ... continuar lista
+            6: "REEMBOLSO",
         };
 
         let total = 0;
@@ -205,7 +190,6 @@
             // Limpar campos do formulário
             document.getElementById('novoFreteiroForm').reset();
         });
-
     </script>
 
 </body>
