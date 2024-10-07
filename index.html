@@ -95,8 +95,8 @@
         <thead>
             <tr>
                 <th>N°</th>
-                <th>Código</th>
-                <th>Freteiro</th>
+                <th>Código do Motorista</th>
+                <th>Nome do Freteiro</th>
                 <th>Motivo</th>
                 <th>Nota</th>
                 <th>Descrição do Motivo</th>
@@ -158,25 +158,7 @@
 
                 contador++;
             } else {
-                // Se o código do motorista não existe, pergunta se deseja adicionar
-                if (!freteiros[codMotorista]) {
-                    const nomeFreteiro = prompt(`Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:`);
-
-                    if (nomeFreteiro) {
-                        freteiros[codMotorista] = nomeFreteiro;
-                        alert(`Motorista ${nomeFreteiro} cadastrado com sucesso!`);
-                    }
-                }
-
-                // Se o código do motivo não existe, pergunta se deseja adicionar
-                if (!motivos[codMotivo]) {
-                    const descricaoMotivo = prompt(`Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:`);
-
-                    if (descricaoMotivo) {
-                        motivos[codMotivo] = descricaoMotivo;
-                        alert(`Motivo ${descricaoMotivo} cadastrado com sucesso!`);
-                    }
-                }
+                alert('Código de Motorista ou Motivo inválido!');
             }
 
             // Reseta o formulário
@@ -195,6 +177,31 @@
 
             document.getElementById('novoFreteiroForm').reset();
         });
+
+        // Função para buscar e exibir dados da planilha
+        const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
+                data.forEach((row, index) => {
+                    if (index > 0) { // Ignora o cabeçalho
+                        const novaLinha = document.createElement('tr');
+                        novaLinha.innerHTML = `
+                            <td>${index}</td>
+                            <td>${row[0]}</td>
+                            <td>${row[1]}</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                        `;
+                        tabela.appendChild(novaLinha);
+                    }
+                });
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
     </script>
 
 </body>
