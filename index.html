@@ -42,6 +42,15 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        .tabs {
+            margin-top: 20px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -59,43 +68,58 @@
 
     <h1>Tabela de Freteiros</h1>
 
-    <!-- Formulário de Entrada -->
-    <form id="freteiroForm">
-        <label for="codMotorista">Código do Motorista:</label>
-        <input type="number" id="codMotorista" name="codMotorista" required>
+    <!-- Abas de navegação -->
+    <div class="tabs">
+        <button onclick="showTab('formulario')">Formulário</button>
+        <button onclick="showTab('relatorio')">Relatório</button>
+    </div>
 
-        <label for="codMotivo">Código do Motivo:</label>
-        <input type="number" id="codMotivo" name="codMotivo" required>
+    <!-- Conteúdo da aba de Formulário -->
+    <div id="formulario" class="tab-content active">
+        <!-- Formulário de Entrada -->
+        <form id="freteiroForm">
+            <label for="codMotorista">Código do Motorista:</label>
+            <input type="number" id="codMotorista" name="codMotorista" required>
 
-        <label for="numeroNota">Número da Nota:</label>
-        <input type="text" id="numeroNota" name="numeroNota" required>
+            <label for="codMotivo">Código do Motivo:</label>
+            <input type="number" id="codMotivo" name="codMotivo" required>
 
-        <label for="valor">Valor:</label>
-        <input type="number" step="0.01" id="valor" name="valor" required>
+            <label for="numeroNota">Número da Nota:</label>
+            <input type="text" id="numeroNota" name="numeroNota" required>
 
-        <input type="submit" value="Adicionar">
-    </form>
+            <label for="valor">Valor:</label>
+            <input type="number" step="0.01" id="valor" name="valor" required>
 
-    <!-- Tabela de Freteiros -->
-    <table id="tabelaFreteiros">
-        <thead>
-            <tr>
-                <th>N°</th>
-                <th>Código do Motorista</th>
-                <th>Nome do Freteiro</th>
-                <th>Motivo</th>
-                <th>Nota</th>
-                <th>Descrição do Motivo</th>
-                <th>Valor</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados serão inseridos aqui -->
-        </tbody>
-    </table>
+            <input type="submit" value="Adicionar">
+        </form>
+    </div>
 
-    <!-- Exibir Total -->
-    <p class="total">Total: <span id="total">0.00</span></p>
+    <!-- Conteúdo da aba de Relatório -->
+    <div id="relatorio" class="tab-content">
+        <!-- Tabela de Freteiros -->
+        <table id="tabelaFreteiros">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Código do Motorista</th>
+                    <th>Nome do Freteiro</th>
+                    <th>Motivo</th>
+                    <th>Nota</th>
+                    <th>Descrição do Motivo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados serão inseridos aqui -->
+            </tbody>
+        </table>
+
+        <!-- Exibir Total -->
+        <p class="total">Total: <span id="total">0.00</span></p>
+
+        <!-- Botão para exportar para Excel -->
+        <button onclick="exportTableToExcel()">Exportar para Excel</button>
+    </div>
 
     <script>
         const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
@@ -161,6 +185,35 @@
             document.getElementById('freteiroForm').reset();
         });
 
+        // Função para trocar de aba
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Função para exportar tabela para Excel
+        function exportTableToExcel() {
+            let table = document.getElementById('tabelaFreteiros');
+            let rows = table.querySelectorAll('tr');
+            let csvContent = '';
+
+            rows.forEach(row => {
+                let cols = row.querySelectorAll('th, td');
+                let rowData = [];
+                cols.forEach(col => rowData.push(col.innerText));
+                csvContent += rowData.join(',') + '\n';
+            });
+
+            let csvFile = new Blob([csvContent], { type: 'text/csv' });
+            let downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(csvFile);
+            downloadLink.download = 'relatorio_freteiros.csv';
+
+            downloadLink.click();
+        }
     </script>
 
 </body>
