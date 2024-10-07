@@ -123,8 +123,8 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
-            // Adiciona motorista ao relatório se existir
-            if (freteiros[codMotorista]) {
+            // Verifica se o motorista e o motivo estão cadastrados
+            if (freteiros[codMotorista] && motivos[codMotivo]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
 
@@ -135,7 +135,7 @@
                     <td>${freteiros[codMotorista]}</td>
                     <td>${codMotivo}</td>
                     <td>${numeroNota}</td>
-                    <td>${motivos[codMotivo] || 'Motivo não cadastrado'}</td>
+                    <td>${motivos[codMotivo]}</td>
                     <td>${valor}</td>
                 `;
 
@@ -144,23 +144,15 @@
                 document.getElementById('total').textContent = total;
                 contador++;
             } else {
-                // Se o código do motorista não existe, pergunta se deseja adicionar
-                const nomeFreteiro = prompt(`Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:`);
-
-                if (nomeFreteiro) {
-                    freteiros[codMotorista] = nomeFreteiro;
-                    alert(`Motorista ${nomeFreteiro} cadastrado com sucesso!`);
+                // Informa ao usuário se o motorista ou motivo não estão cadastrados
+                let mensagem = 'Não foi possível adicionar o registro:';
+                if (!freteiros[codMotorista]) {
+                    mensagem += ` Código do Motorista ${codMotorista} não encontrado.`;
                 }
-            }
-
-            // Se o código do motivo não existe, pergunta se deseja adicionar
-            if (!motivos[codMotivo]) {
-                const descricaoMotivo = prompt(`Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:`);
-
-                if (descricaoMotivo) {
-                    motivos[codMotivo] = descricaoMotivo;
-                    alert(`Motivo ${descricaoMotivo} cadastrado com sucesso!`);
+                if (!motivos[codMotivo]) {
+                    mensagem += ` Código do Motivo ${codMotivo} não encontrado.`;
                 }
+                alert(mensagem);
             }
 
             // Reseta o formulário
