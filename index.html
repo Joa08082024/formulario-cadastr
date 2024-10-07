@@ -123,7 +123,7 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
-            // Adiciona motorista e motivo ao relatório se existirem
+            // Adiciona motorista ao relatório se existir
             if (freteiros[codMotorista]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
@@ -146,6 +146,7 @@
             } else {
                 // Se o código do motorista não existe, pergunta se deseja adicionar
                 const nomeFreteiro = prompt(`Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:`);
+
                 if (nomeFreteiro) {
                     freteiros[codMotorista] = nomeFreteiro;
                     alert(`Motorista ${nomeFreteiro} cadastrado com sucesso!`);
@@ -155,6 +156,7 @@
             // Se o código do motivo não existe, pergunta se deseja adicionar
             if (!motivos[codMotivo]) {
                 const descricaoMotivo = prompt(`Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:`);
+
                 if (descricaoMotivo) {
                     motivos[codMotivo] = descricaoMotivo;
                     alert(`Motivo ${descricaoMotivo} cadastrado com sucesso!`);
@@ -165,18 +167,6 @@
             document.getElementById('freteiroForm').reset();
         });
 
-        document.getElementById('novoFreteiroForm').addEventListener('submit', function (event) {
-            event.preventDefault(); 
-
-            const codigoFreteiro = document.getElementById('codigoFreteiro').value;
-            const nomeFreteiro = document.getElementById('nomeFreteiro').value;
-
-            freteiros[codigoFreteiro] = nomeFreteiro;
-
-            alert(`Freteiro ${nomeFreteiro} cadastrado com sucesso!`);
-
-            document.getElementById('novoFreteiroForm').reset();
-        });
     </script>
 
 </body>
