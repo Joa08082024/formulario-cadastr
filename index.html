@@ -95,11 +95,11 @@
         <thead>
             <tr>
                 <th>N°</th>
-                <th>Código do Motorista</th>
-                <th>Nome do Freteiro</th>
+                <th>Código</th>
+                <th>Freteiro</th>
                 <th>Motivo</th>
                 <th>Nota</th>
-                <th>Descrição do Motivo</th>
+                <th>Motivo</th>
                 <th>Valor</th>
             </tr>
         </thead>
@@ -115,13 +115,13 @@
         const freteiros = {
             27: "ACLEILSON - ANTONIO A.OLIVEIRA SILVA",
             212: "SEBASTIÃO",
-            // Adicione outros freteiros conforme necessário
+            // ... outros freteiros
         };
 
         const motivos = {
             1: "CHAPA/REEMBOLSO",
             2: "DESCONTAR",
-            // Adicione outros motivos conforme necessário
+            // ... outros motivos
         };
 
         let total = 0;
@@ -135,12 +135,10 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
-            // Verifica se o motorista e motivo existem
             if (freteiros[codMotorista] && motivos[codMotivo]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
 
-                // Adiciona os dados à tabela
                 novaLinha.innerHTML = `
                     <td>${contador}</td>
                     <td>${codMotorista}</td>
@@ -161,7 +159,6 @@
                 alert('Código de Motorista ou Motivo inválido!');
             }
 
-            // Reseta o formulário
             document.getElementById('freteiroForm').reset();
         });
 
@@ -173,35 +170,10 @@
 
             freteiros[codigoFreteiro] = nomeFreteiro;
 
-            alert(Freteiro ${nomeFreteiro} cadastrado com sucesso!);
+            alert(`Freteiro ${nomeFreteiro} cadastrado com sucesso!`);
 
             document.getElementById('novoFreteiroForm').reset();
         });
-
-        // Função para buscar e exibir dados da planilha
-        const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
-        
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
-                data.forEach((row, index) => {
-                    if (index > 0) { // Ignora o cabeçalho
-                        const novaLinha = document.createElement('tr');
-                        novaLinha.innerHTML = `
-                            <td>${index}</td>
-                            <td>${row[0]}</td>
-                            <td>${row[1]}</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                        `;
-                        tabela.appendChild(novaLinha);
-                    }
-                });
-            })
-            .catch(error => console.error('Erro ao buscar dados:', error));
     </script>
 
 </body>
