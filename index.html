@@ -76,20 +76,6 @@
         <input type="submit" value="Adicionar">
     </form>
 
-    <!-- Formulário de Cadastro de Freteiros -->
-    <h2>Cadastrar Novo Freteiro</h2>
-    <form id="novoFreteiroForm">
-        <label for="codigoFreteiro">Código do Freteiro:</label>
-        <input type="number" id="codigoFreteiro" name="codigoFreteiro" required>
-
-        <label for="nomeFreteiro">Nome do Freteiro:</label>
-        <input type="text" id="nomeFreteiro" name="nomeFreteiro" required>
-
-        <input type="submit" value="Cadastrar Freteiro">
-    </form>
-
-    <button class="print-button" onclick="window.print()">Imprimir Tabela</button>
-    
     <!-- Tabela de Freteiros -->
     <table id="tabelaFreteiros">
         <thead>
@@ -112,11 +98,30 @@
     <p class="total">Total: <span id="total">0.00</span></p>
 
     <script>
-        const freteiros = {
-            27: "ACLEILSON - ANTONIO A.OLIVEIRA SILVA",
-            212: "SEBASTIÃO",
-            // Adicione outros freteiros conforme necessário
-        };
+        const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
+                data.forEach((row, index) => {
+                    if (index > 0) { // Ignora o cabeçalho
+                        const novaLinha = document.createElement('tr');
+                        novaLinha.innerHTML = `
+                            <td>${index}</td>
+                            <td>${row[0]}</td>
+                            <td>${row[1]}</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                        `;
+                        tabela.appendChild(novaLinha);
+                    }
+                });
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
+    
 
         const motivos = {
             1: "CHAPA/REEMBOLSO",
@@ -179,29 +184,60 @@
         });
 
         // Função para buscar e exibir dados da planilha
-        const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
-        
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
+         // Adiciona motorista e motivo ao relatório se existirem
+         if (freteiros[codMotorista]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
-                data.forEach((row, index) => {
-                    if (index > 0) { // Ignora o cabeçalho
-                        const novaLinha = document.createElement('tr');
-                        novaLinha.innerHTML = `
-                            <td>${index}</td>
-                            <td>${row[0]}</td>
-                            <td>${row[1]}</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                        `;
-                        tabela.appendChild(novaLinha);
-                    }
-                });
-            })
-            .catch(error => console.error('Erro ao buscar dados:', error));
+                const novaLinha = document.createElement('tr');
+
+                // Adiciona os dados à tabela
+                novaLinha.innerHTML = 
+                    <td>${contador}</td>
+                    <td>${codMotorista}</td>
+                    <td>${freteiros[codMotorista]}</td>
+                    <td>${codMotivo}</td>
+                    <td>${numeroNota}</td>
+                    <td>${motivos[codMotivo] || 'Motivo não cadastrado'}</td>
+                    <td>${valor}</td>
+                ;
+
+                tabela.appendChild(novaLinha);
+                total = (parseFloat(total) + parseFloat(valor)).toFixed(2);
+                document.getElementById('total').textContent = total;
+                contador++;
+            } else {
+                // Se o código do motorista não existe, pergunta se deseja adicionar
+                const nomeFreteiro = prompt(Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:);
+                if (nomeFreteiro) {
+                    freteiros[codMotorista] = nomeFreteiro;
+                    alert(Motorista ${nomeFreteiro} cadastrado com sucesso!);
+                }
+            }
+
+            // Se o código do motivo não existe, pergunta se deseja adicionar
+            if (!motivos[codMotivo]) {
+                const descricaoMotivo = prompt(Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:);
+                if (descricaoMotivo) {
+                    motivos[codMotivo] = descricaoMotivo;
+                    alert(Motivo ${descricaoMotivo} cadastrado com sucesso!);
+                }
+            }
+
+            // Reseta o formulário
+            document.getElementById('freteiroForm').reset();
+        });
+
+        document.getElementById('novoFreteiroForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const codigoFreteiro = document.getElementById('codigoFreteiro').value;
+            const nomeFreteiro = document.getElementById('nomeFreteiro').value;
+
+            freteiros[codigoFreteiro] = nomeFreteiro;
+
+            alert(Freteiro ${nomeFreteiro} cadastrado com sucesso!);
+
+            document.getElementById('novoFreteiroForm').reset();
+        });
     </script>
 
 </body>
