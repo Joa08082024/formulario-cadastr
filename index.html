@@ -76,8 +76,6 @@
         <input type="submit" value="Adicionar">
     </form>
 
-
-
     <button class="print-button" onclick="window.print()">Imprimir Tabela</button>
     
     <!-- Tabela de Freteiros -->
@@ -125,8 +123,8 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
-            // Verifica se o motorista e motivo existem
-            if (freteiros[codMotorista] && motivos[codMotivo]) {
+            // Adiciona motorista e motivo ao relatório se existirem
+            if (freteiros[codMotorista]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
 
@@ -137,35 +135,29 @@
                     <td>${freteiros[codMotorista]}</td>
                     <td>${codMotivo}</td>
                     <td>${numeroNota}</td>
-                    <td>${motivos[codMotivo]}</td>
+                    <td>${motivos[codMotivo] || 'Motivo não cadastrado'}</td>
                     <td>${valor}</td>
                 `;
 
                 tabela.appendChild(novaLinha);
-
                 total = (parseFloat(total) + parseFloat(valor)).toFixed(2);
                 document.getElementById('total').textContent = total;
-
                 contador++;
             } else {
                 // Se o código do motorista não existe, pergunta se deseja adicionar
-                if (!freteiros[codMotorista]) {
-                    const nomeFreteiro = prompt(`Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:`);
-
-                    if (nomeFreteiro) {
-                        freteiros[codMotorista] = nomeFreteiro;
-                        alert(`Motorista ${nomeFreteiro} cadastrado com sucesso!`);
-                    }
+                const nomeFreteiro = prompt(`Código de Motorista ${codMotorista} não encontrado. Deseja cadastrá-lo? Digite o nome:`);
+                if (nomeFreteiro) {
+                    freteiros[codMotorista] = nomeFreteiro;
+                    alert(`Motorista ${nomeFreteiro} cadastrado com sucesso!`);
                 }
+            }
 
-                // Se o código do motivo não existe, pergunta se deseja adicionar
-                if (!motivos[codMotivo]) {
-                    const descricaoMotivo = prompt(`Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:`);
-
-                    if (descricaoMotivo) {
-                        motivos[codMotivo] = descricaoMotivo;
-                        alert(`Motivo ${descricaoMotivo} cadastrado com sucesso!`);
-                    }
+            // Se o código do motivo não existe, pergunta se deseja adicionar
+            if (!motivos[codMotivo]) {
+                const descricaoMotivo = prompt(`Código de Motivo ${codMotivo} não encontrado. Deseja cadastrá-lo? Digite a descrição:`);
+                if (descricaoMotivo) {
+                    motivos[codMotivo] = descricaoMotivo;
+                    alert(`Motivo ${descricaoMotivo} cadastrado com sucesso!`);
                 }
             }
 
