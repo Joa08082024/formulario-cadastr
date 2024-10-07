@@ -5,83 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela de Freteiros</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
         table {
-            width: 100%;
+            width: 50%;
             border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid black;
+            margin: 20px auto;
         }
         th, td {
+            border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
         }
-        .total {
-            font-weight: bold;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
-
     <h1>Tabela de Freteiros</h1>
-
-    <!-- Botão para carregar dados da planilha -->
-    <button onclick="carregarDadosFreteiros()">Carregar Freteiros</button>
-
-    <!-- Tabela de Freteiros -->
-    <table id="tabelaFreteiros">
+    <table>
         <thead>
             <tr>
-                <th>Código</th>
+                <th>Cadastro</th>
                 <th>Nome</th>
-                <th>Motivo</th>
-                <th>Nota</th>
-                <th>Valor</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Dados serão inseridos aqui -->
+        <tbody id="freteiros-body">
+            <!-- Os dados serão inseridos aqui -->
         </tbody>
     </table>
 
     <script>
-        // URL da API do Google Apps Script
-        const apiURL = 'https://script.google.com/macros/s/AKfycbwSnPivaNjaTbmMElgDqKUgpIzy-n3qB717M5fe0vqBUoWtyQBPTAaKrmywB-dVUU7K/exec';
+        // URL do seu endpoint que retorna os dados
+        const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
 
-        // Função para buscar e carregar dados dos freteiros
-        function carregarDadosFreteiros() {
-            fetch(apiURL)
-                .then(response => response.json())
-                .then(data => {
-                    const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
-                    tabela.innerHTML = ''; // Limpar a tabela
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('freteiros-body');
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    const tdCadastro = document.createElement('td');
+                    const tdNome = document.createElement('td');
 
-                    data.forEach(freteiro => {
-                        const novaLinha = document.createElement('tr');
-                        novaLinha.innerHTML = `
-                            <td>${freteiro.codigo}</td>
-                            <td>${freteiro.nome}</td>
-                            <td>${freteiro.motivo}</td>
-                            <td>${freteiro.nota}</td>
-                            <td>${freteiro.valor}</td>
-                        `;
-                        tabela.appendChild(novaLinha);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar os dados:', error);
+                    tdCadastro.textContent = row[0];
+                    tdNome.textContent = row[1];
+
+                    tr.appendChild(tdCadastro);
+                    tr.appendChild(tdNome);
+                    tbody.appendChild(tr);
                 });
-        }
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
     </script>
-
 </body>
 </html>
