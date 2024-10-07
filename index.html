@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -42,85 +42,60 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        /* Estilo para o botão laranja */
-        button {
-            background-color: #FFA500;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #FF8C00;
-        }
-        .tab {
-            display: none;
-        }
     </style>
 </head>
 <body>
 
     <h1>Cadastro de Freteiros</h1>
-    
-    <!-- Botões para alternar entre abas -->
-    <button onclick="showTab('formulario')">Cadastro</button>
-    <button onclick="showTab('relatorio')">Relatório</button>
+    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="cadastro">Número do Cadastro:</label><br>
+        <input type="text" id="cadastro" name="cadastro" required><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <h1>Tabela de Freteiros</h1>
 
     <!-- Formulário de Entrada -->
-    <div id="formulario" class="tab">
-        <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
-            <label for="nome">Nome:</label><br>
-            <input type="text" id="nome" name="nome" required><br><br>
+    <form id="freteiroForm">
+        <label for="codMotorista">Código do Motorista:</label>
+        <input type="number" id="codMotorista" name="codMotorista" required>
 
-            <label for="cadastro">Número do Cadastro:</label><br>
-            <input type="text" id="cadastro" name="cadastro" required><br><br>
+        <label for="codMotivo">Código do Motivo:</label>
+        <input type="number" id="codMotivo" name="codMotivo" required>
 
-            <input type="submit" value="Enviar">
-        </form>
+        <label for="numeroNota">Número da Nota:</label>
+        <input type="text" id="numeroNota" name="numeroNota" required>
 
-        <form id="freteiroForm">
-            <label for="codMotorista">Código do Motorista:</label>
-            <input type="number" id="codMotorista" name="codMotorista" required>
+        <label for="valor">Valor:</label>
+        <input type="number" step="0.01" id="valor" name="valor" required>
 
-            <label for="codMotivo">Código do Motivo:</label>
-            <input type="number" id="codMotivo" name="codMotivo" required>
+        <input type="submit" value="Adicionar">
+    </form>
 
-            <label for="numeroNota">Número da Nota:</label>
-            <input type="text" id="numeroNota" name="numeroNota" required>
+    <!-- Tabela de Freteiros -->
+    <table id="tabelaFreteiros">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Código do Motorista</th>
+                <th>Nome do Freteiro</th>
+                <th>Motivo</th>
+                <th>Nota</th>
+                <th>Descrição do Motivo</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão inseridos aqui -->
+        </tbody>
+    </table>
 
-            <label for="valor">Valor:</label>
-            <input type="number" step="0.01" id="valor" name="valor" required>
-
-            <input type="submit" value="Adicionar">
-        </form>
-    </div>
-
-    <!-- Relatório -->
-    <div id="relatorio" class="tab">
-        <h1>Relatório de Freteiros</h1>
-        <table id="tabelaFreteiros">
-            <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Código do Motorista</th>
-                    <th>Nome do Freteiro</th>
-                    <th>Motivo</th>
-                    <th>Nota</th>
-                    <th>Descrição do Motivo</th>
-                    <th>Valor</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados serão inseridos aqui -->
-            </tbody>
-        </table>
-
-        <!-- Exibir Total -->
-        <p class="total">Total: <span id="total">0.00</span></p>
-
-        <!-- Botão para exportar para Excel -->
-        <button onclick="exportTableToExcel()">Exportar para Excel</button>
-    </div>
+    <!-- Exibir Total -->
+    <p class="total">Total: <span id="total">0.00</span></p>
 
     <script>
         const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
@@ -134,28 +109,17 @@
         let total = 0;
         let contador = 1;
 
-        // Função para buscar os dados da planilha e armazenar motoristas
-        function carregarDadosPlanilha() {
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao conectar com a planilha.');
+        // Carregar dados da planilha para freteiros
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach((row, index) => {
+                    if (index > 0) { // Ignora o cabeçalho
+                        freteiros[row[0]] = row[1]; // Código do motorista e nome
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    data.forEach((row, index) => {
-                        if (index > 0) { // Ignora o cabeçalho
-                            freteiros[row[0]] = row[1]; // Código do motorista e nome
-                        }
-                    });
-                    console.log("Dados carregados com sucesso.");
-                })
-                .catch(error => console.error('Erro ao buscar dados:', error));
-        }
-
-        // Chama a função para carregar os dados ao iniciar
-        carregarDadosPlanilha();
+                });
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
 
         // Adicionar dados ao relatório
         document.getElementById('freteiroForm').addEventListener('submit', function (event) {
@@ -190,45 +154,13 @@
                 contador++;
             } else {
                 // Se o código do motorista não existe, exibe mensagem de erro
-                alert(`Código de Motorista ${codMotorista} não encontrado na base.`);
+                alert(Código de Motorista ${codMotorista} não encontrado na base.);
             }
 
             // Reseta o formulário
             document.getElementById('freteiroForm').reset();
         });
 
-        // Função para trocar de aba
-        function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.style.display = 'none');
-            document.getElementById(tabName).style.display = 'block';
-        }
-
-        // Mostrar o formulário ao carregar a página
-        document.addEventListener('DOMContentLoaded', function () {
-            showTab('formulario');
-        });
-
-        // Função para exportar tabela para Excel
-        function exportTableToExcel() {
-            let table = document.getElementById('tabelaFreteiros');
-            let rows = table.querySelectorAll('tr');
-            let csvContent = '';
-
-            rows.forEach(row => {
-                let cols = row.querySelectorAll('th, td');
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csvContent += rowData.join(',') + '\n';
-            });
-
-            let csvFile = new Blob([csvContent], { type: 'text/csv' });
-            let downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(csvFile);
-            downloadLink.download = 'relatorio_freteiros.csv';
-
-            downloadLink.click();
-        }
     </script>
 
 </body>
