@@ -172,10 +172,22 @@
 
         // Função para exportar a tabela para Excel
         document.getElementById('exportarExcel').addEventListener('click', function () {
-            let tabela = document.getElementById('tabelaFreteiros').outerHTML.replace(/ /g, '%20');
+            let tabela = document.getElementById('tabelaFreteiros').outerHTML;
+            let html = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+                <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+                <x:Name>Tabela Freteiros</x:Name>
+                <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+                </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
+                <body>
+                ${tabela}
+                </body></html>`;
+
             let a = document.createElement('a');
-            a.href = 'data:application/vnd.ms-excel,' + tabela;
-            a.download = 'tabela_freteiros.xlsx';
+            let blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            let url = URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'tabela_freteiros.xls';
             a.click();
         });
 
