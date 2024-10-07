@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -47,12 +47,14 @@
 <body>
 
     <h1>Cadastro de Freteiros</h1>
+    
+    <!-- Formulário com o campo de número de cadastro primeiro -->
     <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
-
         <label for="cadastro">Número do Cadastro:</label><br>
         <input type="text" id="cadastro" name="cadastro" required><br><br>
+
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
 
         <input type="submit" value="Enviar">
     </form>
@@ -100,68 +102,4 @@
     <script>
         const url = 'https://script.google.com/macros/s/AKfycbwrOMlBfhmfo2-pjRnVm-cT2LEbqCTOEEpkwL9PyG60rHsGFJQcx75gGLBqTEVoe5iH/exec';
         const freteiros = {}; // Objeto para armazenar motoristas e seus nomes
-        const motivos = {
-            1: "CHAPA/REEMBOLSO",
-            2: "DESCONTAR",
-            // Adicione outros motivos conforme necessário
-        };
-
-        let total = 0;
-        let contador = 1;
-
-        // Carregar dados da planilha para freteiros
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach((row, index) => {
-                    if (index > 0) { // Ignora o cabeçalho
-                        freteiros[row[0]] = row[1]; // Código do motorista e nome
-                    }
-                });
-            })
-            .catch(error => console.error('Erro ao buscar dados:', error));
-
-        // Adicionar dados ao relatório
-        document.getElementById('freteiroForm').addEventListener('submit', function (event) {
-            event.preventDefault(); 
-
-            const codMotorista = document.getElementById('codMotorista').value;
-            const codMotivo = document.getElementById('codMotivo').value;
-            const numeroNota = document.getElementById('numeroNota').value;
-            const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
-
-            // Verifica se o motorista existe
-            if (freteiros[codMotorista]) {
-                const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
-                const novaLinha = document.createElement('tr');
-
-                // Adiciona os dados à tabela
-                novaLinha.innerHTML = `
-                    <td>${contador}</td>
-                    <td>${codMotorista}</td>
-                    <td>${freteiros[codMotorista]}</td>
-                    <td>${codMotivo}</td>
-                    <td>${numeroNota}</td>
-                    <td>${motivos[codMotivo] || 'Motivo não cadastrado'}</td>
-                    <td>${valor}</td>
-                `;
-
-                tabela.appendChild(novaLinha);
-
-                total = (parseFloat(total) + parseFloat(valor)).toFixed(2);
-                document.getElementById('total').textContent = total;
-
-                contador++;
-            } else {
-                // Se o código do motorista não existe, exibe mensagem de erro
-                alert(`Código de Motorista ${codMotorista} não encontrado na base.`);
-            }
-
-            // Reseta o formulário
-            document.getElementById('freteiroForm').reset();
-        });
-
-    </script>
-
-</body>
-</html>
+        const motivos =
