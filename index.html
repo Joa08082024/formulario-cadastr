@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -136,7 +136,7 @@
                 const novaLinha = document.createElement('tr');
 
                 // Adiciona os dados à tabela
-                novaLinha.innerHTML = 
+                novaLinha.innerHTML = `
                     <td>${contador}</td>
                     <td>${codMotorista}</td>
                     <td>${freteiros[codMotorista]}</td>
@@ -144,7 +144,7 @@
                     <td>${numeroNota}</td>
                     <td>${motivos[codMotivo] || 'Motivo não cadastrado'}</td>
                     <td>${valor}</td>
-                ;
+                `;
 
                 tabela.appendChild(novaLinha);
 
@@ -154,7 +154,7 @@
                 contador++;
             } else {
                 // Se o código do motorista não existe, exibe mensagem de erro
-                alert(Código de Motorista ${codMotorista} não encontrado na base.);
+                alert(`Código de Motorista ${codMotorista} não encontrado na base.`);
             }
 
             // Reseta o formulário
