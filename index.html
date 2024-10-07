@@ -119,6 +119,18 @@
         // Chama a função para buscar os dados
         fetchData();
 
+        // Atualiza os detalhes do motorista ao digitar o código
+        document.getElementById('codMotorista').addEventListener('input', function () {
+            const codMotorista = this.value;
+            const freteiroNome = freteiros[codMotorista];
+            if (freteiroNome) {
+                // Preencher o campo de nome do motorista automaticamente
+                document.getElementById('nomeFreteiro').textContent = freteiroNome; // Exibir o nome na tabela
+            } else {
+                document.getElementById('nomeFreteiro').textContent = ""; // Limpa se não encontrado
+            }
+        });
+
         document.getElementById('freteiroForm').addEventListener('submit', function (event) {
             event.preventDefault(); 
 
