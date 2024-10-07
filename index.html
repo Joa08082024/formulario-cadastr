@@ -96,7 +96,7 @@
             <tr>
                 <th>N°</th>
                 <th>Código do Motorista</th>
-                <th>Freteiro</th>
+                <th>Nome do Freteiro</th>
                 <th>Motivo</th>
                 <th>Nota</th>
                 <th>Descrição do Motivo</th>
@@ -135,10 +135,12 @@
             const numeroNota = document.getElementById('numeroNota').value;
             const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
 
+            // Verifica se o motorista e motivo existem
             if (freteiros[codMotorista] && motivos[codMotivo]) {
                 const tabela = document.getElementById('tabelaFreteiros').querySelector('tbody');
                 const novaLinha = document.createElement('tr');
 
+                // Adiciona os dados à tabela
                 novaLinha.innerHTML = `
                     <td>${contador}</td>
                     <td>${codMotorista}</td>
@@ -159,6 +161,7 @@
                 alert('Código de Motorista ou Motivo inválido!');
             }
 
+            // Reseta o formulário
             document.getElementById('freteiroForm').reset();
         });
 
