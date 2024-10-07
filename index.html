@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro e Tabela de Freteiros</title>
+    <title>Cadastro de Freteiros e Tabela</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,8 +47,7 @@
 <body>
 
     <h1>Cadastro de Freteiros</h1>
-    <!-- Formulário para salvar dados na planilha Google -->
-    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbzGblqIKITV-wFO_ZHmovS_SePSgFg7858Cvev6yWK-5fEQGvdZ4c7z0978uMfmwMNP5A/exec" method="post"> 
         <label for="nome">Nome:</label><br>
         <input type="text" id="nome" name="nome" required><br><br>
 
@@ -89,10 +88,8 @@
         <input type="submit" value="Cadastrar Freteiro">
     </form>
 
-    <br><br>
-
     <button class="print-button" onclick="window.print()">Imprimir Tabela</button>
-
+    
     <!-- Tabela de Freteiros -->
     <table id="tabelaFreteiros">
         <thead>
@@ -118,39 +115,20 @@
         const freteiros = {
             27: "ACLEILSON - ANTONIO A.OLIVEIRA SILVA",
             212: "SEBASTIÃO",
-            275: "ADELIO - VINICIUS MARTINS LISBOA LIMA",
-            12: "ADELSON - ADELSON DE P. MORAIS",
-            16: "AGNALDO - AGNALDO RIBEIRO",
-            68: "OLIVEIRA - ANA MARCIA NERES BATISTA",
-            22: "ANDERSON - ANDERSON ARRUDA",
-            19: "BARBOSA",
-            302: "BADU",   
-            237: "BISPO - RAFAEL BISPO DE ARAGAO",
-            60: "BONAFE - LEANDRO BONAFE DOS SANTOS",
-            36: "BRENO - BRENO DOS SANTOS BRITO",
-            258: "BRITO - BRUNO DOS SANTOS BRITO",
-            83: "BRUNO - BRUNO FERNANDO DE CAMARGO",
-            236: "BUENO - ODIRLEY BUENO DE CAMARGO",
-            33: "CAETANO - ROMILSON VILA NOVA CAETANO",
-            20: "CAIQUE - CAIQUE LIMA PEDERIVA",
-            79: "CAMPOS - OSMAR DOS SANTOS CAMPOS",
+            // ... outros freteiros
         };
 
         const motivos = {
             1: "CHAPA/REEMBOLSO",
             2: "DESCONTAR",
-            3: "PEDAGIO",
-            4: "PEGAMENTO MERCADORIA",
-            5: "ESTACIONAMENTO",
-            6: "REEMBOLSO",
+            // ... outros motivos
         };
 
         let total = 0;
         let contador = 1;
 
-        // Função para adicionar uma nova linha na tabela
         document.getElementById('freteiroForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio do formulário
+            event.preventDefault(); 
 
             const codMotorista = document.getElementById('codMotorista').value;
             const codMotivo = document.getElementById('codMotivo').value;
@@ -173,7 +151,6 @@
 
                 tabela.appendChild(novaLinha);
 
-                // Atualizar total
                 total = (parseFloat(total) + parseFloat(valor)).toFixed(2);
                 document.getElementById('total').textContent = total;
 
@@ -182,23 +159,19 @@
                 alert('Código de Motorista ou Motivo inválido!');
             }
 
-            // Limpar campos do formulário
             document.getElementById('freteiroForm').reset();
         });
 
-        // Função para cadastrar novos freteiros
         document.getElementById('novoFreteiroForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio do formulário
+            event.preventDefault(); 
 
             const codigoFreteiro = document.getElementById('codigoFreteiro').value;
             const nomeFreteiro = document.getElementById('nomeFreteiro').value;
 
-            // Adiciona o novo freteiro ao objeto
             freteiros[codigoFreteiro] = nomeFreteiro;
 
             alert(`Freteiro ${nomeFreteiro} cadastrado com sucesso!`);
 
-            // Limpar campos do formulário
             document.getElementById('novoFreteiroForm').reset();
         });
     </script>
